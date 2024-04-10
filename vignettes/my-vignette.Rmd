@@ -1,0 +1,56 @@
+---
+title: "DrugReSC Tutorial"
+author: "Chonghui Liu<br/>Guohua Wang"
+date: "`r Sys.Date()`"
+output:   
+  html_document:
+    df_print: paged
+    toc: yes
+vignette: >
+  %\VignetteIndexEntry{my-vignette}
+  %\VignetteEngine{knitr::rmarkdown}
+  %\VignetteEncoding{UTF-8}
+---
+
+# Introduction
+
+DrugReSC, an innovative approach to drug repurposing utilizing single-cell RNA sequencing data, with the objective of targeting specific cell subpopulations critical to disease pathology.
+
+```{r setup, message=FALSE}
+library(DrugReSC)
+library(PACSI)
+```
+
+# DrugReSC example
+
+The execution of the DrugReSC method primarily involves three steps: 1. Utilizing our previously developed PACSI method to identify disease-associated cells. 2. Constructing signature lists for drug instances. 3. Computing the drug score for each drug intance and generating a ranked list of candidate drugs.
+
+### 1. Identification of disease-associated cells.
+Following the PACSI tutorial, we first load the single-cell RNA sequencing (scRNA-seq) data, batch expression matrix, and corresponding sample phenotype data. Subsequently, we execute the PACSI method to identify cells associated with disease phenotypes. (https://github.com/Chonghui-Liu/PACSI-project).
+
+```{r message=FALSE, warning=FALSE}
+sc_data <- PACSI::case1_sc_data_1to100
+bulk_data <- PACSI::case1_bulk_data_200to300
+phenotype_data <- PACSI::case1_sample_pheno_labels_200to300
+ppi_location <- system.file("extdata", "ppi.csv", package = "PACSI")
+suppressWarnings({
+  PACSI_result <- PACSI::PACSI(bulk_data, phenotype_data, sc_data, ppi_data = ppi_location,times = 10,ncores = 2)
+})
+table(PACSI_result$result$cell_phenotype_labels)
+```
+
+### 2. Constructing the drug instance signature list based on the iLINCS drug instance 
+database IDs.
+
+```{r message=FALSE}
+drug_iLINCS_sig_id <- c("LINCSCP_178870", "LINCSCP_179309", "LINCSCP_2385", "LINCSCP_2554", "LINCSCP_26", "LINCSCP_34","LINCSCP_53", "LINCSCP_53344", "LINCSCP_53471", "LINCSCP_69009")
+iLINCS_signature_list <- DrugReSC::get_drug_iLINCS_sig(drug_iLINCS_sig_id)
+drug_signature_list <- DrugReSC::get_drug_sig(iLINCS_signature_list)
+```
+
+### 3. Perform DrugReSC to predict a list of candidate drugs for the disease.
+
+```{r message=FALSE, warning=FALSE}
+candidate_drugs <- DrugReSC::DrugReSC(sc_data,drug_signature_list,PACSI_result,ncore=2)
+head(candidate_drugs)
+```
