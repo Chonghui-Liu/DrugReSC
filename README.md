@@ -4,6 +4,7 @@
  ### Introduction ###
  DrugReSC, an innovative approach to drug repurposing utilizing single-cell RNA sequencing data, with the objective of targeting specific cell subpopulations critical to disease pathology.
 
+
 ### Installation ###
 * Step 1 Install devtools in R
 ```R
@@ -16,7 +17,7 @@ install_github("Chonghui-Liu/DrugReSC")
 ```
 
 ### Examples ###
-Please see https://htmlpreview.github.io/?https://github.com/Chonghui-Liu/DrugReSC/vignettes/my-vignette.html for details. In the R terminal, please use the command `?DrugReSC` to access the help documents.
+Please see https://htmlpreview.github.io/?https://github.com/Chonghui-Liu/DrugReSC/tree/main/vignettes/my-vignette.html for details. In the R terminal, please use the command `?DrugReSC` to access the help documents.
 
 ### How to cite `DrugReSC` ###
 Please cite the following manuscript:
