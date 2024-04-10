@@ -5,7 +5,7 @@
  DrugReSC, an innovative approach to drug repurposing utilizing single-cell RNA sequencing data, with the objective of targeting specific cell subpopulations critical to disease pathology.
 
 <p align="center">
-<img src=workflow.tif height="702" width="600">
+<img src=workflow.png height="365" width="890">
 </p>
 
 ### Installation ###
